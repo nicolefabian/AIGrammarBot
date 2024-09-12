@@ -1,13 +1,15 @@
-import "dotenv/config";
-import express from "express";
-import fetch from "node-fetch";
+import "dotenv/config"; //for API
+
+import express from "express"; //handles HTTP requests
+import fetch from "node-fetch"; //making HTTP requests
+
 
 const app = express();
 const port = process.env.PORT || 5000;
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
-
+//renders the homepage
 app.get("/", (req, res) => {
   res.render("index", {
     corrected: "",
@@ -44,7 +46,7 @@ app.post("/correct", async (req, res) => {
         max_tokens: 100,
         n: 1,
         stop: null,
-        temperature: 0.7,
+        temperature: 0.7, //creativity level
       }),
     });
 
@@ -57,6 +59,7 @@ app.post("/correct", async (req, res) => {
       });
     }
 
+    //displays the data
     const data = await response.json();
     const correctedText = data.choices[0].message.content;
     res.render("index", {
